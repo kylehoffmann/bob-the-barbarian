@@ -282,16 +282,22 @@ game_end();
 */
 
 // Checks the state of Bob.
-// -    First if no motion key is pressed draw his idle position.
+// -    First if no motion key is pressed draw his idle position. And to see if
+//          the t-frame easter egg is active.
 //      Second, in frame 1 (second frame) Bob wobbles his head to our left. (Rotate Bob's 
 //          sprite by the value in macro WALK_ANIMATION_ROTATE_ANGLE)
-//      Second, in frame 3 (fourth frame) Bob wobbles his head to our right. (Rotate Bob's 
+//      Third, in frame 3 (fourth frame) Bob wobbles his head to our right. (Rotate Bob's 
 //          sprite by negative the value in macro WALK_ANIMATION_ROTATE_ANGLE)
-//
-if (global.idle == true)draw_sprite( SPR_BOB, 0, x, y);
-else if (global.walk_animation_cycle = 1) draw_sprite_ext( SPR_BOB, 0, x, y, 1, 1, WALK_ANIMATION_ROTATE_ANGLE, c_white, 1 );
-else if (global.walk_animation_cycle = 3) draw_sprite_ext( SPR_BOB, 0, x, y, 1, 1, -WALK_ANIMATION_ROTATE_ANGLE, c_white, 1 );
-else draw_sprite( SPR_BOB, 0, x, y);
+//      Finally in any of the remaining frames Bob stands in the idle position.
+//      Bob's sprite and animation frame are defined by global.bob_sprite_name
+//          and global.bob_sprite_start_frame respectively. This is so Bob can
+//          have multiple skins. (These are set by first changing global.bob_sprite_id
+//          then calling SCR_BOB_SPRITE_UPDATER().)
+//          Note: SCR_BOB_SPRITE_UPDATER() is called whenever a new map is loaded.
+if (global.idle  || !global.bob_animate)draw_sprite( global.bob_sprite_name, global.bob_sprite_start_frame, x, y);
+else if (global.walk_animation_cycle = 1) draw_sprite_ext (global.bob_sprite_name , global.bob_sprite_start_frame, x, y, 1, 1, WALK_ANIMATION_ROTATE_ANGLE, c_white, 1 );
+else if (global.walk_animation_cycle = 3) draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, x, y, 1, 1, -WALK_ANIMATION_ROTATE_ANGLE, c_white, 1 );
+else draw_sprite( global.bob_sprite_name, global.bob_sprite_start_frame, x, y);
 
 // Handles Bob'sfter Image. 
 // -    Only runs when the run key is pressed, a direction key is pressed and 
@@ -299,7 +305,7 @@ else draw_sprite( SPR_BOB, 0, x, y);
 if ( global.run_state > 0)
 {
     // This is the same basic check as above for Bob's normal animation. 
-    // -    The difference is that we don't need to check for bob being idle,
+    // -    The difference is that we only need to check for the t-frame easter egg,
     //          and draw three semi transparent Bobs.
     //      The colour bob turns is defined by marco RUN_COLOUR.
     //      Bob's basic colour change is the max opacity of the colour layer 
@@ -315,24 +321,30 @@ if ( global.run_state > 0)
     //          this Bob's opacity is reduced by RUN_AFTER_IMAGE_2_FADE_MULTIPLIER. 
     //
     //      TO_DO Option: Spread Bob's after images further out the further he gets 
-    //          in run states it might make it look like he is running faster.
-    if (global.walk_animation_cycle == 1) 
+    //          in run states it might make it look like he is running faster.   
+    if (!global.bob_animate) 
     {
-        draw_sprite_ext( SPR_BOB, 0, x, y, 1, 1, WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) );
-        draw_sprite_ext( SPR_BOB, 0, global.bob_last_x_array[RUN_AFTER_IMAGE_1], global.bob_last_y_array[RUN_AFTER_IMAGE_1], 1, 1, WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) * RUN_AFTER_IMAGE_1_FADE_MULTIPLIER );
-        draw_sprite_ext( SPR_BOB, 0, global.bob_last_x_array[RUN_AFTER_IMAGE_2], global.bob_last_y_array[RUN_AFTER_IMAGE_2], 1, 1, WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) * RUN_AFTER_IMAGE_2_FADE_MULTIPLIER );
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, x, y, 1, 1, 0, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1 ) );
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, global.bob_last_x_array[RUN_AFTER_IMAGE_1], global.bob_last_y_array[RUN_AFTER_IMAGE_1], 1, 1, 0, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1 ) * RUN_AFTER_IMAGE_1_FADE_MULTIPLIER);
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, global.bob_last_x_array[RUN_AFTER_IMAGE_2], global.bob_last_y_array[RUN_AFTER_IMAGE_2], 1, 1, 0, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1 ) * RUN_AFTER_IMAGE_2_FADE_MULTIPLIER);
+    }
+    else if (global.walk_animation_cycle == 1) 
+    {
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, x, y, 1, 1, WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) );
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, global.bob_last_x_array[RUN_AFTER_IMAGE_1], global.bob_last_y_array[RUN_AFTER_IMAGE_1], 1, 1, WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) * RUN_AFTER_IMAGE_1_FADE_MULTIPLIER );
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, global.bob_last_x_array[RUN_AFTER_IMAGE_2], global.bob_last_y_array[RUN_AFTER_IMAGE_2], 1, 1, WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) * RUN_AFTER_IMAGE_2_FADE_MULTIPLIER );
     }
     else if (global.walk_animation_cycle == 3)
     {
-        draw_sprite_ext( SPR_BOB, 0, x, y, 1, 1, -WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) );
-        draw_sprite_ext( SPR_BOB, 0, global.bob_last_x_array[RUN_AFTER_IMAGE_1], global.bob_last_y_array[RUN_AFTER_IMAGE_1], 1, 1, -WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) * RUN_AFTER_IMAGE_1_FADE_MULTIPLIER);
-        draw_sprite_ext( SPR_BOB, 0, global.bob_last_x_array[RUN_AFTER_IMAGE_2], global.bob_last_y_array[RUN_AFTER_IMAGE_2], 1, 1, -WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) * RUN_AFTER_IMAGE_2_FADE_MULTIPLIER);
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, x, y, 1, 1, -WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) );
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, global.bob_last_x_array[RUN_AFTER_IMAGE_1], global.bob_last_y_array[RUN_AFTER_IMAGE_1], 1, 1, -WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) * RUN_AFTER_IMAGE_1_FADE_MULTIPLIER);
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, global.bob_last_x_array[RUN_AFTER_IMAGE_2], global.bob_last_y_array[RUN_AFTER_IMAGE_2], 1, 1, -WALK_ANIMATION_ROTATE_ANGLE, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1) * RUN_AFTER_IMAGE_2_FADE_MULTIPLIER);
     }    
     else 
     {
-        draw_sprite_ext( SPR_BOB, 0, x, y, 1, 1, 0, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1 ) );
-        draw_sprite_ext( SPR_BOB, 0, global.bob_last_x_array[RUN_AFTER_IMAGE_1], global.bob_last_y_array[RUN_AFTER_IMAGE_1], 1, 1, 0, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1 ) * RUN_AFTER_IMAGE_1_FADE_MULTIPLIER);
-        draw_sprite_ext( SPR_BOB, 0, global.bob_last_x_array[RUN_AFTER_IMAGE_2], global.bob_last_y_array[RUN_AFTER_IMAGE_2], 1, 1, 0, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1 ) * RUN_AFTER_IMAGE_2_FADE_MULTIPLIER);
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, x, y, 1, 1, 0, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1 ) );
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, global.bob_last_x_array[RUN_AFTER_IMAGE_1], global.bob_last_y_array[RUN_AFTER_IMAGE_1], 1, 1, 0, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1 ) * RUN_AFTER_IMAGE_1_FADE_MULTIPLIER);
+        draw_sprite_ext( global.bob_sprite_name, global.bob_sprite_start_frame, global.bob_last_x_array[RUN_AFTER_IMAGE_2], global.bob_last_y_array[RUN_AFTER_IMAGE_2], 1, 1, 0, RUN_COLOUR, RUN_MAX_FADE/ ( RUN_STATE_MAX - global.run_state + 1 ) * RUN_AFTER_IMAGE_2_FADE_MULTIPLIER);
     }
 }
 
@@ -370,4 +382,34 @@ else
     global.run_state = 0;
     // Resets the delay between run states.
     global.run_state_timer = 0;
+}
+#define SCR_BOB_SPRITE_UPDATER
+// SCR_BOB_SPRITE_UPDATER()
+//  Uses global.bob_sprite_id to update global.bob_sprite_start_frame & global.bob_sprite_name.
+
+// Assumes Bob will be animated.
+global.bob_animate = true;
+
+// Checks all the id's and associates the correct sprite.
+// -    TO_DO: Handels the special case that the id is invalid with
+//          a sepcial case.
+if (global.bob_sprite_id == 0)
+{
+    // ID = 0, Defualt Bob
+    global.bob_sprite_start_frame = 0;
+    global.bob_sprite_name = SPR_BOB;
+}
+else if (global.bob_sprite_id == 1)
+{
+    // ID = 1, Hat Bob
+    global.bob_sprite_start_frame = 1;
+    global.bob_sprite_name = SPR_BOB;
+}
+else
+{
+    // ID = undefined, Unfinished Bob
+    global.bob_sprite_start_frame = 2;
+    global.bob_sprite_name = SPR_BOB;
+    // Lets the game know not to animate Bob.
+    global.bob_animate = false;
 }

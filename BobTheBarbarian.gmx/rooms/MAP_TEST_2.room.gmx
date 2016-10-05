@@ -54,7 +54,7 @@
     <instance objName="OBJ_MAP_CONTROLLER" x="0" y="0" name="inst_E13DF400" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_WALL" x="128" y="320" name="inst_484652E8" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_WALL" x="192" y="256" name="inst_7A37B74A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="OBJ_WALL" x="256" y="192" name="inst_70A757D0" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="OBJ_WALL" x="224" y="192" name="inst_70A757D0" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_WALL" x="448" y="320" name="inst_09449ECA" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_WALL" x="512" y="320" name="inst_94D5C1FE" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_WALL" x="576" y="384" name="inst_045CB49A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
@@ -80,12 +80,13 @@
     <instance objName="OBJ_WALL" x="64" y="512" name="inst_50790D6F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_WALL" x="64" y="448" name="inst_7EFCAE62" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_WALL" x="64" y="384" name="inst_DE90B486" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="OBJ_WALL" x="320" y="192" name="inst_E96832AC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="OBJ_WALL" x="352" y="192" name="inst_E96832AC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_WALL" x="384" y="256" name="inst_9D0E2A1A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_BOB" x="256" y="384" name="inst_4498C007" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_EXIT" x="800" y="224" name="inst_4888328D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_WALL" x="640" y="320" name="inst_D41E7496" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="OBJ_BREAKABLE_RUN" x="608" y="480" name="inst_083B9682" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="OBJ_EXIT" x="319" y="224" name="inst_72410EFD" locked="0" code="hidden_path = true;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="BG_BaseTileset" x="768" y="-32" w="32" h="32" xo="0" yo="0" id="10000036" name="inst_9C4F38E4" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>

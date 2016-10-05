@@ -14,6 +14,7 @@
     <sound>sound\SND_CRYPTO_Kevin_MacLeod_incompetech_com</sound>
     <sound>sound\SND_CLACK_Reitanna_freesound_org</sound>
     <sound>sound\SND_WALL_RUN_8_BIT_JUMP_the_dweeb_man_freesounds_org</sound>
+    <sound>sound\SND_MAGICAL_THING_Jobro_freesounds_org</sound>
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\SPR_BOB</sprite>
@@ -53,6 +54,7 @@
     <object>objects\OBJ_EXIT</object>
     <object>objects\OBJ_BREAKABLE_RUN</object>
     <object>objects\OBJ_BREAKABLE_WALK</object>
+    <object>objects\OBJ_COSTUME_CHANGER</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\MAP_INITILIZATION</room>

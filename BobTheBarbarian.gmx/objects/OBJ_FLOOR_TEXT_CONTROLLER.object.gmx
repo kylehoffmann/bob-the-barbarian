@@ -44,7 +44,7 @@ if(global.current_map == FLOOR_1_ID)
     draw_text(512, 1202, message_1);
     draw_text(512, 202, message_2);
 }
-else if(global.current_map == TEST_MAP_ID)
+else if(global.current_map == TEST_MAP_2_ID)
 {
     // Text for the first secret room. (MAP_TEST)
 

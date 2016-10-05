@@ -243,6 +243,19 @@ global.run_state_timer = 0;
 // Timer to count between steps.
 // -    Set with WALK_ANIMATION_DELAY.
 global.walk_animation_timer = 0;
+// This stores the id of the sprite currently used for bob.
+// -    Default: 0
+global.bob_sprite_id = 0;
+// This stores the frame of the sprite currently used for bob.
+// -    Default: 0
+global.bob_sprite_start_frame = 0;
+// This stores the name of the sprite currently used for bob.
+// -    Default: SPR_BOB
+global.bob_sprite_name = SPR_BOB;
+// Boolean to see if bob should be animated.
+// -    This is used for an easter egg. To make bob look like a 
+//          wireframe.
+global.bob_animate = true;
 // Boolean to see if bob is allowed to move.
 // -    More practically this decides of the player is allowed to control the character
 //          on screen. This is meant for cutscenes and menus.
@@ -450,10 +463,10 @@ else
             // Updates map id to the first hidden map.
             // -    In this case the the first test map, thus the value stored in 
             //          the macro TEST_MAP_ID.
-            global.current_map = TEST_MAP_ID;
+            global.current_map = TEST_MAP_2_ID;
             // Load the next level.
             // -    Defualt: macro MAP_TEST.
-            room_goto(MAP_TEST);
+            room_goto(MAP_TEST_2);
         }
     }
     else if (argument0 == FLOOR_4_ID)
@@ -524,24 +537,61 @@ else
         // Updates map id to the next map.
         // -    In this case the second test map, thus the value stored in 
         //          the macro TEST_MAP_2_ID.
-        global.current_map = TEST_MAP_2_ID;
+        global.current_map = FLOOR_3_ID;
         
         // Load the next level.
         // -    Defualt: macro MAP_TEST_2.
-        room_goto(MAP_TEST_2);
+        room_goto(MAP_FLOOR_3);
     }
     else if (argument0 == TEST_MAP_2_ID)
     {
+        // Warp from MAP_TEST.
+        // -    This is a special case as there is a hidden exit.
+        //          The "secret" exit is actually a warp back
+        //          to MAP_FLOOR_3.
+        
+        // Check to see which exit was used to leave the map.
+        // -    global.teleport_id store the id of the exit used.
+        //          By default OBJ_EXIT sets global.teleport_id to 0, but 
+        //          during instance creation setting hidden_path = true will
+        //          cause global.teleport_id = 1 if that exit is used.
+        //      Note: This currrently could be a boolean, but just incase
+        //          I want to allow 3+ exits later using an int is safer.
+        if (global.teleport_id == 0)
+        {
+            // The normal exit was used.
+        
+            // Updates map id to the next main map.
+            // -    In this case the floor 4, thus the value stored in 
+            //          the macro FLOOR_4_ID.
+            global.current_map = TEST_MAP_ID;
+            // Load the next level.
+            // -    Defualt: macro MAP_FLOOR_4.
+            room_goto(MAP_TEST);
+        }
+        else
+        {
+            // The secret exit was used.
+            
+            // Updates map id to the first hidden map.
+            // -    In this case the the first test map, thus the value stored in 
+            //          the macro TEST_MAP_ID.
+            global.current_map = FLOOR_3_ID;
+            // Load the next level.
+            // -    Defualt: macro MAP_TEST.
+            room_goto(MAP_FLOOR_3);
+        }
+        
         // Warp from MAP_TEST_2.
         
         // Updates map id to the next map.
         // -    In this case it returns to the map where the secret path was found,
         //      thus the value stored in the macro FLOOR_3_ID.
-        global.current_map = FLOOR_3_ID;
+        //global.current_map = FLOOR_3_ID;
         
         // Load the next level.
         // -    Defualt: macro MAP_FLOOR_3.
-        room_goto(MAP_FLOOR_3);
+        //room_goto(MAP_FLOOR_3);
     }
     else
     {
@@ -735,6 +785,9 @@ for (i = 0; i < 10; i++)
 
 // Creates the object that puts text on the floor of certian levels.
 instance_create(0, 0, OBJ_FLOOR_TEXT_CONTROLLER);
+
+// Refresh Bob's sprite.
+SCR_BOB_SPRITE_UPDATER();
 
 #define SCR_KEY_CHECK
 /*SCR_KEY_CHECK (key_macro(int))

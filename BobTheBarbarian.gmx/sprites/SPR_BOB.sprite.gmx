@@ -21,5 +21,7 @@
   <height>64</height>
   <frames>
     <frame index="0">images\SPR_BOB_0.png</frame>
+    <frame index="1">images\SPR_BOB_1.png</frame>
+    <frame index="2">images\SPR_BOB_2.png</frame>
   </frames>
 </sprite>
